@@ -14,7 +14,7 @@ func main() {
 	}
 	words := strings.Split(filterText(text), " ")
 	symbols := proceedWords(words)
-	symbol, exists := findFirstUniqueSymbol(symbols)
+	symbol, exists := findFirstUniqueSymbol(strings.Join(symbols, ""))
 	if (exists) {
 		println(symbol)
 	} else {
@@ -23,10 +23,9 @@ func main() {
 }
 
 // Returns symbol and true, if unique symbol exists OR empty string and false, if it doesn't
-func findFirstUniqueSymbol(s []string) (string, bool) {
-	str := strings.Join(s, "")
-	for _, c := range str {
-		if (strings.Count(str, string(c)) == 1) {
+func findFirstUniqueSymbol(s string) (string, bool) {
+	for _, c := range s {
+		if (strings.Count(s, string(c)) == 1) {
 			return string(c), true
 		}
 	}
@@ -38,18 +37,9 @@ func findFirstUniqueSymbol(s []string) (string, bool) {
 func proceedWords(words []string) []string {
 	symbols := make([]string, 0, len(words))
 	for _, w := range words {
-		if (w == "") {
-			continue
-		}
-		x := ""
-		for _, s := range w {
-			if (strings.Count(w, string(s)) == 1) {
-				x = string(s)
-				break
-			}
-		}
-		if (x != "") {
-			symbols = append(symbols, x)
+		s, exists := findFirstUniqueSymbol(w)
+		if (exists) {
+			symbols = append(symbols, s)
 		}
 	}
 
