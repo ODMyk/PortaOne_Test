@@ -8,8 +8,6 @@ const (
 	INPUT_FILENAME = "input.txt"
 	IGNORED_SYMBOLS_FILENAME = "ignored_symbols.txt"
 	TWO = 2
-	KB = 1024
-	MB = 1024 * KB
 )
 
 // Returns filename from console arguments
@@ -33,7 +31,11 @@ func GetText(filename string) (string, error) {
 	if (err != nil) {
 		return "", err
 	}
-	buf := make([]byte, MB)
+	fInfo, err := f.Stat()
+	if (err != nil) {
+		return "", err
+	}
+	buf := make([]byte, fInfo.Size())
 	c, err := f.Read(buf)
 	if (err != nil) {
 		return "", err
